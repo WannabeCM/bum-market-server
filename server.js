@@ -14,9 +14,11 @@ const upload = multer({
   }),
 });
 const port = 8080;
+
 app.use(express.json());
 app.use(cors());
 app.use("/uploads", express.static("uploads"));
+
 app.get("/products", (req, res) => {
   models.Product.findAll({
     order: [["createdAt", "DESC"]],
@@ -30,7 +32,6 @@ app.get("/products", (req, res) => {
     })
     .catch((error) => {
       console.error(error);
-      res.send("에러 발생");
       res.status(400).send("에러 발생");
     });
 });
@@ -76,7 +77,6 @@ app.get("/products/:id", (req, res) => {
     })
     .catch((error) => {
       console.error(error);
-      res.send("상품 조회에 에러가 발생했습니다");
       res.status(400).send("상품 조회에 에러가 발생했습니다");
     });
 });
@@ -88,6 +88,7 @@ app.post("/image", upload.single("image"), (req, res) => {
     imageUrl: file.path,
   });
 });
+
 app.listen(port, () => {
   console.log("범마켓 서버가 돌아가고 있습니다");
   models.sequelize
